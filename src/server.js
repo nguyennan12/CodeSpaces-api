@@ -1,16 +1,27 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 
 import express from 'express'
-import { mapOrder } from '~/utils/sorts.js'
+import exitHook from 'async-exit-hook'
+import { GET_DB, CONNECT_DB, CLOSE_DB } from './config/mongodb'
+import { env } from '~/config/environment'
 
-const app = express()
+const START_SERVER = () => {
+  const app = express()
 
-const hostname = 'localhost'
-const port = 8017
+  app.listen(env.LOCAL_DEV_APP_PORT, env.LOCAL_DEV_APP_HOST, () => {
+    console.log(`Hello Trung Quan Dev, I am running at ${env.LOCAL_DEV_APP_PORT}:${env.LOCAL_DEV_APP_HOST}/`)
+  })
+  exitHook(() => {
+    console.log('Exitting')
+    CLOSE_DB()
+  })
+}
 
-app.get('/', (req, res) => {
-})
-
-app.listen(port, hostname, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Hello Trung Quan Dev, I am running at ${ hostname }:${ port }/`)
-})
+CONNECT_DB()
+  .then(() => console.log('connect mongoDb success'))
+  .then(() => START_SERVER())
+  .catch(error => {
+    console.error(error)
+    process.exit(0)
+  })
