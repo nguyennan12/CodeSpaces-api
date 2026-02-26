@@ -21,7 +21,7 @@ const START_SERVER = () => {
   app.use('/v1', APIs_V1)
 
   app.listen(env.LOCAL_DEV_APP_PORT, env.LOCAL_DEV_APP_HOST, () => {
-    console.log(`Hello Trung Quan Dev, I am running at ${env.LOCAL_DEV_APP_PORT}:${env.LOCAL_DEV_APP_HOST}/`)
+    console.log(`Hello ${env.AUTHOR}, I am running at  http://${env.LOCAL_DEV_APP_HOST}:${env.LOCAL_DEV_APP_PORT}`)
   })
   exitHook(() => {
     console.log('Exitting')
