@@ -9,6 +9,8 @@ export const env = {
   AUTHOR: process.env.AUTHOR,
 
   BUILD_MODE: process.env.BUILD_MODE,
+  WEBSITE_DOMAIN_DEV: process.env.WEBSITE_DOMAIN_DEV,
+  WEBSITE_DOMAIN_PRODUCTIONL: process.env.WEBSITE_DOMAIN_PRODUCTION,
 
   BREVO_API_KEY: process.env.BREVO_API_KEY,
   ADMIN_EMAIL_ADDRESS: process.env.ADMIN_EMAIL_ADDRESS,

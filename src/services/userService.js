@@ -28,7 +28,7 @@ const createNew = async (reqBody) => {
 
     const verificationLink = `${WEBSITE_DOMAIN}/account/verification?email=${getNewUser.email}&token=${getNewUser.verifyToken}`
 
-    const customSubject = 'Trello: Plaese verify your email before using our services!'
+    const customSubject = 'CodeSpaces: Plaese verify your email before using our services!'
     const htmlContent = `
     <h3>Here is verificantion link</h3>
     <h3>${verificationLink}</h3>
@@ -43,7 +43,7 @@ const createNew = async (reqBody) => {
 
 const verifyAccount = async (reqBody) => {
   try {
-    const existUser = userModel.findOneByEmail(reqBody.email)
+    const existUser = await userModel.findOneByEmail(reqBody.email)
 
     if (!existUser) throw new ApiError(StatusCodes.NOT_FOUND, 'Account not found!')
     if (existUser.isActive) throw new ApiError(StatusCodes.NOT_ACCEPTABLE, 'Your account is already active!')
@@ -54,7 +54,7 @@ const verifyAccount = async (reqBody) => {
       verifyToken: null
     }
 
-    const updatedUser = userModel.update(updateData)
+    const updatedUser = userModel.update(existUser._id, updateData)
 
     return pickUser(updatedUser)
   } catch (error) { throw error }
@@ -62,7 +62,7 @@ const verifyAccount = async (reqBody) => {
 
 const login = async (reqBody) => {
   try {
-    const existUser = userModel.findOneByEmail(reqBody.email)
+    const existUser = await userModel.findOneByEmail(reqBody.email)
 
     if (!existUser) throw new ApiError(StatusCodes.NOT_FOUND, 'Account not found!')
     if (!existUser.isActive) throw new ApiError(StatusCodes.NOT_ACCEPTABLE, 'Your account is not already active!')
