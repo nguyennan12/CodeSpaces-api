@@ -8,14 +8,25 @@ import { env } from '~/config/environment'
 import { APIs_V1 } from './routes/v1'
 import cors from 'cors'
 import { corsOptions } from './config/cors'
+import cookieParser from 'cookie-parser'
 
 const START_SERVER = () => {
   const app = express()
 
-  app.use(express.json())
+  //fix Cache form disk cua expressjs
+  app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store')
+    next()
+  })
+
+  //cau hinh cookie parser
+  app.use(cookieParser())
 
   //xu ly cors
   app.use(cors(corsOptions))
+
+  //bat req.body
+  app.use(express.json())
 
   //use APIs in v1
   app.use('/v1', APIs_V1)
